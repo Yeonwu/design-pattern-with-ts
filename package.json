@@ -1,0 +1,27 @@
+{
+  "name": "design-pattern-with-ts",
+  "version": "1.0.0",
+  "description": "Learn Design Pattern with Type Script",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch src/* --exec \"npm run myapp\"",
+    "myapp": "npx tsc && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yeonwu/design-pattern-with-ts.git"
+  },
+  "author": "Yeonwu Oh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yeonwu/design-pattern-with-ts/issues"
+  },
+  "homepage": "https://github.com/Yeonwu/design-pattern-with-ts#readme",
+  "devDependencies": {
+    "@types/node": "^16.4.12",
+    "ts-node": "^10.1.0",
+    "typescript": "^4.3.5"
+  },
+  "type": "module"
+}

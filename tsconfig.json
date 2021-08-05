@@ -1,0 +1,11 @@
+{
+    "include": [
+        "src/**/*"
+    ],
+    "compilerOptions": {
+        "module": "ES6",
+        "rootDir": "src",
+        "outDir": "dist",
+        "target": "ES6"
+    }
+}
