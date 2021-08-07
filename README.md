@@ -10,6 +10,7 @@
 ## 목차
 
 - [Chapter 01 Iterator](#chapter-01-iterator)
+- [Chapter 02 Adapter](#chapter-02-adapter)
 
 ---
 
@@ -36,7 +37,7 @@ Iterator 패턴에는 두가지 역할이 있습니다.
 
 ```typescript
 // src/aggregation.ts
-export abstract class Aggregation {
+abstract class Aggregation {
   abstract getIterator(): MyIterator;
 }
 ```
@@ -50,7 +51,7 @@ Aggregation는 추상메서드 `getIterator`를 갖고 있습니다.
 
 ```typescript
 // src/iterator.ts
-export abstract class Iterator {
+abstract class Iterator {
   abstract hasNext(): boolean;
   abstract next(): any;
 }
@@ -80,4 +81,66 @@ for (var i = 0; i < n; i++) {
 Aggregation 클래스와 Iteraoter 클래스는 모두 추상클래스입니다.  
 실제 구현은 두 클래스를 implement하여 만들어진 BookShelf, BookIterator클래스에서 이루어집니다.
 
+### BookShelf
+
+```typescript
+class BookShelf implements Aggregation {
+  // 데이터 저장할 배열.
+  private books: Array<Book>;
+  constructor() {
+    this.books = [];
+  }
+  // iterator 셍성.
+  getIterator(): MyIterator {
+    return new BookIterator(this);
+  }
+  // 배열 길이.
+  getLength(): number {
+    return this.books.length;
+  }
+  // index로 배열 참조.
+  getBookAt(index: number): Book {
+    return this.books[index];
+  }
+  // 책 추가
+  addBook(title: string) {
+    this.books.push(new Book(title));
+  }
+}
+```
+
+### BookIterator
+
+```typescript
+class BookIterator implements MyIterator {
+  // 반복에 사용할 카운터.
+  private counter: number;
+  // 생성자. 훑을 대상을 필드로 갖고 있음.
+  constructor(private bookShelf: BookShelf) {
+    this.counter = 0;
+  }
+  // 다음 대상이 있는지 확인.
+  hasNext(): boolean {
+    return this.counter < this.bookShelf.getLength();
+  }
+  // 다음 대상 가저오고 다음 순서로 이동.
+  next(): Book {
+    return this.bookShelf.getBookAt(this.counter++);
+  }
+}
+```
+
 ---
+
+### Iterator를 이용하는 이유
+
+- 하나씩 세는 행동을 구현과 분리하여 사용 가능합니다.  
+즉, Aggregation과 Iterator가 어떻게 구현되든 Main에서 Itorator를 사용하는 방법은 같습니다.
+- 자료구조를 보호하면서 내용에 접근할 수 있습니다. Main은 Aggregation이 어떻게 구현되는지 모릅니다.
+- hasNext와 next를 이용하여 자료구조를 변경하지 않으면서 노출시킬 정보를 변경할 수 있습니다.  
+  
+**Main에서는 BookIterator가 아닌 Iterator의 메서드를 사용하여 프로그래밍하고 있습니다.**
+
+---
+
+## Chapter 02 Adapter
